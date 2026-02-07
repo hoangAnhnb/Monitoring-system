@@ -1,10 +1,12 @@
 import os
 from celery import Celery
 from sqlalchemy import create_engine, text
-from .discord import send_alert
+import requests
+
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 REDIS_URL = os.getenv("REDIS_URL")
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
 
 celery = Celery(
     "worker",
@@ -21,6 +23,26 @@ def evaluate(value, threshold):
     if value >= threshold["warning"]:
         return "warning"
     return "normal"
+
+
+def send_alert(metric, status):
+    if not DISCORD_WEBHOOK_URL:
+        print("Missing DISCORD_WEBHOOK_URL")
+        return
+
+    msg = (
+        f"🚨 ALERT [{status.upper()}]\n"
+        f"Device: {metric['device_id']}\n"
+        f"Metric: {metric['metric']}\n"
+        f"Value: {metric['value']}\n"
+        f"Time: {metric['timestamp']}"
+    )
+
+    requests.post(
+        DISCORD_WEBHOOK_URL,
+        json={"content": msg},
+        timeout=5,
+    )
 
 
 @celery.task(name="worker.process_metric")
