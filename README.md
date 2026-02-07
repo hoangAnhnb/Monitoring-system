@@ -2,9 +2,14 @@
 
 Backend monitoring system built with a containerized architecture.
 
+# Notice
+
+If no threshold is configured for a metric, the metric will be stored
+but no alert will be triggered.
+
 ## Tech Stack
 
-- Node.js
+- FastAPI (Python)
 - PostgreSQL
 - Redis
 - Docker & Docker Compose
@@ -33,8 +38,12 @@ cp .env.example .env
 
 ## Run the application
 
+```bash
 docker compose up --build
+```
 
 ## Stop services
 
+```bash
 docker compose down
+```
