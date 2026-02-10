@@ -7,6 +7,9 @@ Backend monitoring system built with a containerized architecture.
 If no threshold is configured for a metric, the metric will be stored
 but no alert will be triggered.
 
+Create a Discord webhook to receive notifications; here's an example of the webhook I created:
+https://discord.com/api/webhooks/1469253454525370389/8CwSddodWpAHXKIm9JoASD57fzD7nN4odtxhRv-kNsKDuEtDSOAoUd2tmgHskFwoHk5s
+
 ## Tech Stack
 
 - FastAPI (Python)
